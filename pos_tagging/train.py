@@ -1,13 +1,18 @@
 import evaluate
 from sklearn.model_selection import train_test_split
 from transformers import TrainingArguments, Trainer, AutoTokenizer, AutoModelForTokenClassification
-from pos_tagging_dataset.pos_tagging_dataset import PosTagging_Dataset
-from pos_tagging_dataset.pos_tagging_preprocess import get_dataset, build_tag
+from pos_tagging.pos_tagging_dataset import PosTagging_Dataset
+from pos_tagging.pos_tagging_preprocess import get_dataset, build_tag
 from util.metric import compute_metrics
+import warnings
+
+warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
     sentences, sentence_tags = get_dataset()
     _, label2id, _ = build_tag(sentence_tags)
+
+    print(label2id)
 
     train_sentences, test_sentences, train_tags, test_tags = train_test_split(
         sentences, sentence_tags, test_size=0.3, random_state=42
@@ -26,7 +31,12 @@ if __name__ == "__main__":
     val_dataset = PosTagging_Dataset(valid_sentences, valid_tags, tokenizer, label2id)
     test_dataset = PosTagging_Dataset(test_sentences, test_tags, tokenizer, label2id)
 
-    model = AutoModelForTokenClassification.from_pretrained(model_name)
+    num_labels = len(label2id)
+    model = AutoModelForTokenClassification.from_pretrained(
+        model_name,
+        num_labels=num_labels,
+        ignore_mismatched_sizes=True
+    )
     accuracy = evaluate.load("accuracy")
     ignore_label = len(label2id)
     training_args = TrainingArguments(

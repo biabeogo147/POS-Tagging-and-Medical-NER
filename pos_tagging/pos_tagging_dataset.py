@@ -30,7 +30,7 @@ class PosTagging_Dataset(Dataset):
 
         return {
             "input_ids": self.pad_and_truncate(input_token, pad_id=self.tokenizer.pad_token_id),
-            "labels": self.pad_and_truncate(labels, pad_id=self.label2id["0"]),
+            "labels": self.pad_and_truncate(labels, pad_id=self.label2id["PAD"]),
             "attention_mask": self.pad_and_truncate(attention_mask, pad_id=0)
         }
 

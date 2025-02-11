@@ -18,6 +18,8 @@ def get_dataset():
 def build_tag(sentence_tags):
     unique_tags = set(tag for doc in sentence_tags for tag in doc)
     label2id = {tag: idx for idx, tag in enumerate(unique_tags)}
+    if 'PAD' not in label2id:
+        label2id['PAD'] = len(label2id)
     id2label = {idx: tag for tag, idx in label2id.items()}
     return unique_tags, label2id, id2label
 
