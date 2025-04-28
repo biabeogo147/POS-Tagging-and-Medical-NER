@@ -1,7 +1,6 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForTokenClassification
-
-from pos_tagging.pos_tagging_dataset.pos_tagging_preprocess import build_tag, get_dataset
+from pos_tagging.pos_tagging_preprocess import build_tag, get_dataset
 
 if __name__ == "__main__":
     sentences, sentence_tags = get_dataset()
