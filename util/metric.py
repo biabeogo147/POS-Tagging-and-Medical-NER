@@ -1,6 +1,10 @@
+import evaluate
 import numpy as np
 
-def compute_metrics(eval_pred, ignore_label, accuracy):
+accuracy = evaluate.load("accuracy")
+
+
+def compute_metrics(eval_pred, ignore_label):
     predictions, labels = eval_pred
     mask = labels != ignore_label
     predictions = np.argmax(predictions, axis=-1)

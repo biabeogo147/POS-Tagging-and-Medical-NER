@@ -42,10 +42,17 @@ POS-Tagging-and-Medical-NER/
 
 ---
 
-## 🧠 Model Architecture
-![POS Tagging Architecture](image/pos_architecture.png)
+## 🧠 Training and Evaluating Progress
 
-*POS Tagging Architecture*
+![POS Tagging](image/pos_progress.png)
+
+<p align="center"><em>POS Tagging Progress</em></p>
+
+<br><br>
+
+![Medical NER Architecture](image/ner_progress.png)
+
+<p align="center"><em>Medical NER Progress</em></p>
 
 ---
 
@@ -53,11 +60,11 @@ POS-Tagging-and-Medical-NER/
 ## ✨ Inference: Bringing Predictions to Life
 Ready to see the model in action? Run inference on your medical texts using the provided scripts:
 ```bash
-python medical_ner/inference.py --input "Patient reports fever and shortness of breath" --model models/medical_ner
+python medical_ner/inference.py --input "Patient reports fever and shortness of breath"
 ```
 Or for POS Tagging:
 ```bash
-python pos_tagging/inference.py --input "Patient reports fever and shortness of breath" --model models/pos_tagger
+python pos_tagging/inference.py --input "Patient reports fever and shortness of breath"
 ```
 Watch as the model tags parts of speech or highlights medical entities with surgical precision!
 

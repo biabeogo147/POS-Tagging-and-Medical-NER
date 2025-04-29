@@ -1,12 +1,13 @@
-import evaluate
 from sklearn.model_selection import train_test_split
 from transformers import TrainingArguments, Trainer, AutoTokenizer, AutoModelForTokenClassification
 from pos_tagging.pos_tagging_dataset import PosTagging_Dataset
 from pos_tagging.pos_tagging_preprocess import get_dataset, build_tag
 from util.metric import compute_metrics
 import warnings
+import os
 
 warnings.filterwarnings("ignore")
+
 
 if __name__ == "__main__":
     sentences, sentence_tags = get_dataset()
@@ -32,13 +33,13 @@ if __name__ == "__main__":
     test_dataset = PosTagging_Dataset(test_sentences, test_tags, tokenizer, label2id)
 
     num_labels = len(label2id)
+    ignore_label = len(label2id)
+
     model = AutoModelForTokenClassification.from_pretrained(
         model_name,
         num_labels=num_labels,
         ignore_mismatched_sizes=True
     )
-    accuracy = evaluate.load("accuracy")
-    ignore_label = len(label2id)
     training_args = TrainingArguments(
         output_dir="out_dir",
         learning_rate=1e-5,
@@ -56,7 +57,10 @@ if __name__ == "__main__":
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
         tokenizer=tokenizer,
-        compute_metrics=lambda eval_pred: compute_metrics(eval_pred, ignore_label, accuracy)
+        compute_metrics=lambda eval_pred: compute_metrics(eval_pred, ignore_label)
     )
 
     trainer.train()
+
+    model.save_pretrained(os.path.join("..\\out_dir", "pos_model"))
+    tokenizer.save_pretrained(os.path.join("..\\out_dir", "pos_model"))

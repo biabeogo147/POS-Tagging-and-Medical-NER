@@ -1,19 +1,23 @@
+import os
 import torch
-from transformers import AutoTokenizer, AutoModelForTokenClassification
+import argparse
 from pos_tagging.pos_tagging_preprocess import build_tag, get_dataset
+from transformers import AutoTokenizer, AutoModelForTokenClassification
+
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="POS Tagging Inference")
+    parser.add_argument("--input", type=str, required=True, help="Input sentence for POS tagging")
+    args = parser.parse_args()
+
     sentences, sentence_tags = get_dataset()
     _, _, id2label = build_tag(sentence_tags)
 
-    model_name = "QCRI/bert-base-multilingual-cased-pos-english"
-    model = AutoModelForTokenClassification.from_pretrained(model_name)
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_name,
-        use_fast=True
-    )
+    model_dir = os.path.join("..\\out_dir", "pos_model")
+    tokenizer = AutoTokenizer.from_pretrained(model_dir)
+    model = AutoModelForTokenClassification.from_pretrained(model_dir)
 
-    test_sentence = "We are exploring the topic of deep learning"
+    test_sentence = args.input
     input_ids = torch.as_tensor([tokenizer.convert_tokens_to_ids(test_sentence.split())])
     input_ids = input_ids.to("cuda")
 
