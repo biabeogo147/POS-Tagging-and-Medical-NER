@@ -72,6 +72,5 @@ Watch as the model tags parts of speech or highlights medical entities with surg
 
 ## 📊 Evaluation: Where Results Shine Bright
 ![Evaluation Metrics](image/evaluation_metrics.png)  
-*Insert a vibrant chart or table showcasing precision, recall, F1-score, or confusion matrices here to highlight your model’s brilliance!*
 
 ---
